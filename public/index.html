@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Ficha de Anamnese - Podologia</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f8f8;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 40px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #007777;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+      text-align: left;
+      color: #333;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 14px;
+      background-color: #fafafa;
+      transition: border-color 0.2s ease-in-out;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #009999;
+      outline: none;
+      background-color: #fff;
+    }
+
+    button {
+      background-color: #009999;
+      color: white;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 15px;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #007777;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a {
+      text-align: center;
+      display: block;
+      padding: 10px;
+      background-color: #007777;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    a:hover {
+      background-color: #005f5f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ficha de Anamnese</h1>
+
+    <form id="formPaciente">
+      <label>Nome:</label>
+      <input type="text" id="nome" required>
+
+      <label>Data de Nascimento:</label>
+      <input type="date" id="data_nascimento" required>
+
+      <label>Telefone:</label>
+      <input type="text" id="telefone" placeholder="(XX) XXXXX-XXXX">
+
+      <label>Histórico Clínico:</label>
+      <textarea id="historico" rows="3"></textarea>
+
+      <h3>Condições de Saúde</h3>
+
+      <label>Diabetes:</label>
+      <select id="diabetes">
+        <option value="Não">Não</option>
+        <option value="Sim">Sim</option>
+      </select>
+
+      <label>Problema cardiovascular:</label>
+      <select id="cardiovascular">
+        <option value="Não">Não</option>
+        <option value="Sim">Sim</option>
+      </select>
+
+      <label>Hipertensão:</label>
+      <select id="hipertensao">
+        <option value="Não">Não</option>
+        <option value="Sim">Sim</option>
+      </select>
+
+      <label>Alergias:</label>
+      <select id="alergias">
+        <option value="Não">Não</option>
+        <option value="Sim">Sim</option>
+      </select>
+
+      <label>Uso de medicamentos:</label>
+      <select id="medicamentos">
+        <option value="Não">Não</option>
+        <option value="Sim">Sim</option>
+      </select>
+
+      <label>Observações adicionais:</label>
+      <textarea id="observacoes" rows="3"></textarea>
+
+      <button type="submit">Salvar</button>
+    </form>
+
+    <div class="links">
+      <a href="pacientes.html">👩‍⚕️ Ver pacientes cadastrados</a>
+      <a href="atendimento.html">🩺 Registrar atendimento</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

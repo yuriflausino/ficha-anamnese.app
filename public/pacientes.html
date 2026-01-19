@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Pacientes</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f8f8;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 40px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+      max-width: 1000px;
+      width: 90%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #007777;
+      margin-bottom: 25px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #009999;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    button {
+      background-color: #007777;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005f5f;
+    }
+
+    .botao-voltar {
+      display: block;
+      margin: 25px auto 0;
+      background-color: #009999;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out;
+      width: fit-content;
+    }
+
+    .botao-voltar:hover {
+      background-color: #007777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pacientes Cadastrados</h1>
+
+    <table id="tabelaPacientes">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Data de Nascimento</th>
+          <th>Telefone</th>
+          <th>Histórico</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <a href="index.html" class="botao-voltar">← Voltar</a>
+  </div>
+
+  <script>
+    async function carregarPacientes() {
+      try {
+        const response = await fetch("/api/pacientes");
+        const pacientes = await response.json();
+        const tbody = document.querySelector("#tabelaPacientes tbody");
+        tbody.innerHTML = "";
+
+        pacientes.forEach(p => {
+          const dataFormatada = new Date(p.data_nascimento)
+            .toLocaleDateString("pt-BR", { timeZone: "UTC" });
+
+          const linha = document.createElement("tr");
+          linha.innerHTML = `
+            <td>${p.nome}</td>
+            <td>${dataFormatada}</td>
+            <td>${p.telefone}</td>
+            <td>${p.historico || ""}</td>
+            <td><button onclick="verHistorico(${p.id})">Ver histórico</button></td>
+          `;
+          tbody.appendChild(linha);
+        });
+      } catch (error) {
+        console.error("Erro ao carregar pacientes:", error);
+      }
+    }
+
+    function verHistorico(id) {
+      window.location.href = `atendimento.html?id=${id}`;
+    }
+
+    carregarPacientes();
+  </script>
+</body>
+</html>

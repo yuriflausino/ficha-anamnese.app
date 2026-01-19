@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Histórico de Atendimentos</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f8f8;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 40px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+      max-width: 1000px;
+      width: 90%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #007777;
+      margin-bottom: 25px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #009999;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .botao-voltar {
+      display: block;
+      margin: 25px auto 0;
+      background-color: #009999;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out;
+      width: fit-content;
+    }
+
+    .botao-voltar:hover {
+      background-color: #007777;
+    }
+
+    .info-paciente {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Histórico de Atendimentos</h1>
+    <div class="info-paciente" id="infoPaciente">Carregando informações do paciente...</div>
+
+    <table id="tabelaHistorico">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Procedimentos Realizados</th>
+          <th>Observações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <a href="pacientes.html" class="botao-voltar">← Voltar</a>
+  </div>
+
+  <script>
+    async function carregarHistorico() {
+      const params = new URLSearchParams(window.location.search);
+      const pacienteId = params.get("id");
+
+      if (!pacienteId) {
+        alert("ID do paciente não encontrado!");
+        window.location.href = "pacientes.html";
+        return;
+      }
+
+      try {
+        // Buscar dados do paciente
+        const pacienteResp = await fetch(`/api/pacientes/${pacienteId}`);
+        const paciente = await pacienteResp.json();
+
+        document.getElementById("infoPaciente").textContent =
+          `Paciente: ${paciente.nome} | Telefone: ${paciente.telefone || "Não informado"}`;
+
+        // Buscar histórico de atendimentos
+        const resp = await fetch(`/api/atendimentos/${pacienteId}`);
+        const historico = await resp.json();
+
+        const tbody = document.querySelector("#tabelaHistorico tbody");
+        tbody.innerHTML = "";
+
+        if (historico.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3">Nenhum atendimento registrado.</td></tr>`;
+          return;
+        }
+
+        historico.forEach(h => {
+          const data = new Date(h.data).toLocaleDateString("pt-BR", { timeZone: "UTC" });
+          const linha = document.createElement("tr");
+          linha.innerHTML = `
+            <td>${data}</td>
+            <td>${h.procedimentos || "-"}</td>
+            <td>${h.observacoes || "-"}</td>
+          `;
+          tbody.appendChild(linha);
+        });
+
+      } catch (error) {
+        console.error("Erro ao carregar histórico:", error);
+        alert("Erro ao carregar histórico de atendimentos.");
+      }
+    }
+
+    carregarHistorico();
+  </script>
+</body>
+</html>
